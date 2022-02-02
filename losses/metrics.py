@@ -9,7 +9,7 @@ from torch import nn, Tensor
 from scipy.spatial import distance
 import numpy as np
 
-from ARViT2D.utils.distance_loss import Distance_loss
+from losses.distance_loss import Distance_loss
 
 from fastai.vision.all import *
 from fastai.distributed import *
@@ -21,9 +21,8 @@ __all__ = ['Accuracy','DL1','DL2','DL3','DL4','DL5','DL6','Cross_Entropy']
 
 ######################################################################
 #Parameters
-beta_metric = 0.01
-gamma_metric = 0.0005
-sigma_metric = 0.01
+
+lambda_metric = 0.01
 
 c_entropy = nn.CrossEntropyLoss() 
 LD = Distance_loss()
@@ -42,7 +41,7 @@ def DL1(preds,target):
 
     Latt = LD(preds[3], preds[1][0])
     
-    return (sigma_metric*Latt).float().mean()
+    return (lambda_metric*Latt).float().mean()
 
 ######################################################################
 
@@ -50,7 +49,7 @@ def DL2(preds,target):
 
     Latt = LD(preds[3], preds[1][1])
     
-    return (sigma_metric*Latt).float().mean()
+    return (lambda_metric*Latt).float().mean()
 
 ######################################################################
 
@@ -58,7 +57,7 @@ def DL3(preds,target):
 
     Latt = LD(preds[3], preds[1][2])
     
-    return (sigma_metric*Latt).float().mean()
+    return (lambda_metric*Latt).float().mean()
 
 ######################################################################
 
@@ -66,7 +65,7 @@ def DL4(preds,target):
 
     Latt = LD(preds[3], preds[1][3])
     
-    return (sigma_metric*Latt).float().mean()
+    return (lambda_metric*Latt).float().mean()
 
 ######################################################################
 
@@ -74,7 +73,7 @@ def DL5(preds,target):
 
     Latt = LD(preds[3], preds[1][4])
     
-    return (sigma_metric*Latt).float().mean()
+    return (lambda_metric*Latt).float().mean()
 
 ######################################################################
 
@@ -82,7 +81,7 @@ def DL6(preds,target):
 
     Latt = LD(preds[3], preds[1][5])
     
-    return (sigma_metric*Latt).float().mean()
+    return (lambda_metric*Latt).float().mean()
 
 ######################################################################
 

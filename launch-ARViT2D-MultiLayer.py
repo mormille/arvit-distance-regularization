@@ -27,7 +27,7 @@ from torch import nn
 import argparse
 
 from ARViT2D.ARViT2D import ARViT2D
-from losses.distance_loss import ARViT2D_Loss
+from losses.distance_loss import *
 from losses.metrics import *
 
 from torch.nn.parallel import DistributedDataParallel
@@ -48,13 +48,13 @@ epochs = 10
 lr = 1e-4
 
 #HYPERPARAMETERS
-reg_layer = 2
+reg_layers = [0,1,2,3,4,5]
 grid_l = 16
 nclass = 10
 alpha = 4
 beta = 0.5 
 gamma = 0.1
-lambda_ = 0.01
+lambdas = [0.002,0.002,0.002,0.002,0.002,0.002]
 
 #SAVE FILE DETAILS
 model_dir = Path.home()/'Luiz/saved_models/AROB'
@@ -102,7 +102,7 @@ def new_empty():
 dloader.new_empty = new_empty
 
 #Defining the Loss Function
-total_loss = ARViT2D_Loss(layer=reg_layer, lambda_=lambda_)
+total_loss = ARViT2D_MultiLayer_Loss(layers=reg_layers, lambdas=lambdas)
 
 #plateau = ReduceLROnPlateau(monitor='valid_loss', patience=2)
 save_best = SaveModelCallback(monitor='valid_loss', fname=best_name)
