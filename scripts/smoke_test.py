@@ -7,14 +7,18 @@ without correcting its formulas or restructuring its packages.
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 import torch
 from PIL import Image
 from torchvision import transforms
 
-from ARViT2D.ARViT2D import ARViT2D
-from losses.distance_loss import ARViT2D_Loss
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from ARViT2D.ARViT2D import ARViT2D  # noqa: E402
+from losses.distance_loss import ARViT2D_Loss  # noqa: E402
 
 
 def load_batch(use_imagenette: bool, batch_size: int = 2) -> torch.Tensor:
