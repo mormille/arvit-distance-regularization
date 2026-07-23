@@ -22,9 +22,20 @@ jobs:
         with:
           python-version: "3.8"
       - name: Install legacy environment
+        shell: bash
         run: |
-          python -m pip install pip==23.3.2 setuptools==68.2.2 wheel==0.41.3
-          python -m pip install -r environment/legacy-requirements.txt
+          set +e
+          {
+            python -m pip install -q pip==23.3.2 setuptools==68.2.2 wheel==0.41.3
+            python -m pip install -q -r environment/legacy-requirements.txt
+          } > legacy-install.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo "Legacy environment installation failed. Diagnostic tail:"
+            tail -n 120 legacy-install.log
+            exit "$status"
+          fi
+          tail -n 20 legacy-install.log
       - name: Report environment
         run: |
           python - <<'PY'
