@@ -36,6 +36,14 @@ jobs:
             exit "$status"
           fi
           tail -n 20 legacy-install.log
+      - name: Upload installation diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-install-log
+          path: legacy-install.log
+          if-no-files-found: ignore
+          retention-days: 3
       - name: Report environment
         run: |
           python - <<'PY'
