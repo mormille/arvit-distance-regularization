@@ -58,6 +58,22 @@ jobs:
           })
           PY
       - name: Run synthetic smoke
-        run: python scripts/smoke_test.py
+        run: python scripts/smoke_test.py > synthetic-smoke.log 2>&1
+      - name: Upload synthetic smoke diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-smoke-log
+          path: synthetic-smoke.log
+          if-no-files-found: ignore
+          retention-days: 3
       - name: Run Imagenette one-batch smoke
-        run: python scripts/smoke_test.py --imagenette
+        run: python scripts/smoke_test.py --imagenette > imagenette-smoke.log 2>&1
+      - name: Upload Imagenette smoke diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: imagenette-smoke-log
+          path: imagenette-smoke.log
+          if-no-files-found: ignore
+          retention-days: 3
