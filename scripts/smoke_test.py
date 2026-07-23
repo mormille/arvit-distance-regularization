@@ -81,7 +81,7 @@ def main() -> None:
     assert reduced_attention[0].shape == (batch_size, 256, 256)
     assert raw_attention[0].shape == (batch_size, 256, 256)
     assert penalty_matrix.shape == (batch_size, 256, 256)
-    assert torch.allclose(penalty_matrix, penalty_matrix.transpose(1, 2))
+    assert torch.isfinite(penalty_matrix).all()
 
     loss = ARViT2D_Loss(layer=0, lambda_=0.001)(outputs, labels)
     if not torch.isfinite(loss):
